@@ -27,3 +27,6 @@ $ while my-app-system-watcher.core ; do true ; done
 #+END_SRC
 
 This will cut down on reload time.
+
+This tool depends on https://github.com/pve1/shell-utility. The rest
+is in quicklisp.
