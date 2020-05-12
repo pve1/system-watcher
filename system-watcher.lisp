@@ -24,8 +24,6 @@
                  :systems (ensure-list systems)
                  :test-function test-function))
 
-(export 'watcher)
-
 (defgeneric files-to-watch (watcher)
   (:method ((w watcher))
     (let ((files (append (loop :for s :in (systems w)
