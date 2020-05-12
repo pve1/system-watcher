@@ -1,0 +1,29 @@
+
+* System watcher
+
+A tool that let's you continually run your tests in a terminal while
+you code. Saving a file that belongs to the system you're working on
+will automatically trigger a reload (from source) and test run.
+
+Use it like this:
+
+#+BEGIN_SRC sh
+$ ./system-watcher-sbcl-loop --test-function "my-system/tests:run-tests" my-system my-system/tests [ other systems to watch ]
+#+END_SRC
+
+If the ~--test-function~ option is specified, then it should name a
+function defined to call ~(fiveam:run! 'mysystem::all-tests)~ or
+something similar.
+
+You may copy system-watcher-sbcl and system-watcher-sbcl-loop to =~/bin=
+if you like.
+
+If your project has massive dependencies, you can specify ~--core t~
+(or ~--core name-of-core~) which will save a core that you should use
+like this:
+
+#+BEGIN_SRC sh
+$ while my-app-system-watcher.core ; do true ; done
+#+END_SRC
+
+This will cut down on reload time.

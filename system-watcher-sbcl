@@ -1,0 +1,9 @@
+#!/bin/sh
+sbcl \
+--noinform \
+--disable-debugger \
+--quit \
+--eval '(ASDF:LOAD-SYSTEM "system-watcher")' \
+--eval '(ASDF:LOAD-SYSTEM "shell-utility")' \
+--eval '(SHELL-UTILITY::LAUNCH/2 (MAKE-INSTANCE (QUOTE SHELL-UTILITY::SBCL) :LAUNCH-OPTIONS (QUOTE (:REST-KEYWORD :SYSTEMS))) (QUOTE SYSTEM-WATCHER::MAIN/SBCL))' \
+"$@"

@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $(readlink -fn $0)`
+while ./system-watcher-sbcl "$@" ; do true ; done
+
