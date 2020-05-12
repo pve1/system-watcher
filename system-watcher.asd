@@ -5,7 +5,7 @@
 you code. Saving a file that belongs to the system you're working on
 will automatically trigger a reload (from source) and test run."
   :author "Peter von Etter <your.name@example.com.invalid>"
-  :license  "Specify license here"
+  :license  "LLGPL"
   :version "0.0.1"
   :serial t
   :components ((:file "package")
