@@ -92,6 +92,8 @@
     (sleep 0.2)
     (watch-files w)))
 
+
+;; Either run main-watcher/sbcl or save a core that does so.
 #+sbcl
 (defun main/sbcl (&key systems test-function core)
   (if core
@@ -110,6 +112,9 @@
         (prepare watcher)
         (main-watcher/sbcl watcher))))
 
+;; Load the files, run the tests, then quit when a change is
+;; detected. Interactive interrupt (^C) should result in non-zero exit
+;; status.
 #+sbcl
 (defun main-watcher/sbcl (watcher)
   (sb-ext:disable-debugger)
