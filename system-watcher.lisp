@@ -48,7 +48,10 @@
       (let (systems-prepared-for)
         (dolist (s (systems w))
           (asdf:operate 'asdf:prepare-op s
-                        :force-not systems-prepared-for)
+                        :verbose t
+                        :force-not (set-difference (systems w)
+                                                   (list s)
+                                                   :test #'string=))
           (push s systems-prepared-for)))
       (setf (prepare-done-p w) t))))
 
@@ -60,14 +63,27 @@
   (:method (watcher)
     nil))
 
+(defun pick-next-system-to-load (systems)
+  (find-if (lambda (x)
+             (let ((deps (asdf:system-depends-on
+                          (asdf:find-system x))))
+               (null (intersection systems deps :test #'string=))))
+           systems))
+
 ;; Load systems from source.
 (defgeneric perform-load (watcher)
   (:method ((w watcher))
     (handler-bind ((style-warning #'muffle-warning))
-      (dolist (s (systems w))
-        (asdf:operate 'asdf:load-source-op s
-                      :force (list s)
-                      :force-not (asdf:already-loaded-systems))))))
+      (let ((systems-to-load (systems w))
+            loaded-systems)
+        (loop :while systems-to-load
+              :do (let ((next (pick-next-system-to-load systems-to-load)))
+                    (assert next)
+                    (setf systems-to-load (remove next systems-to-load
+                                                  :test #'string=))
+                    (asdf:operate 'asdf:load-source-op next
+                                  :verbose t
+                                  :force-not (asdf:already-loaded-systems))))))))
 
 (defgeneric run-tests (watcher)
   (:method ((w watcher))
