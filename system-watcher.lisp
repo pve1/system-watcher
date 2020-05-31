@@ -112,6 +112,7 @@
 ;; Either run main-watcher/sbcl or save a core that does so.
 #+sbcl
 (defun main/sbcl (&key systems test-function core)
+  (setf *load-verbose* t)
   (if core
       (let ((watcher (watcher systems test-function))
             (core-name (if (equal "t" core)
@@ -134,7 +135,6 @@
 #+sbcl
 (defun main-watcher/sbcl (watcher)
   (sb-ext:disable-debugger)
-  (setf *load-verbose* t)
   (handler-case
       (watch-systems watcher)
     (serious-condition (x)
